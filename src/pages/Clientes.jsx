@@ -50,6 +50,20 @@ const eliminarCliente = (id) => {
     .catch(err => console.error(err))
 }
 
+  // Función para formatear fecha ISO a formato yyyy-MM-dd
+const formatearFecha = (fechaISO) => {
+    if (!fechaISO) return ''
+    const fecha = new Date(fechaISO)
+    return fecha.toISOString().split('T')[0]
+}
+
+  // Función para formatear fecha para mostrar (dd/MM/yyyy)
+const formatearFechaMostrar = (fechaISO) => {
+    if (!fechaISO) return 'No registrada'
+    const fecha = new Date(fechaISO)
+    return fecha.toLocaleDateString('es-ES')
+}
+
   // Editar cliente
 const editarCliente = (cliente) => {
     setFormData({
@@ -60,7 +74,7 @@ const editarCliente = (cliente) => {
     email: cliente.email,
     direccion: cliente.direccion,
     telefono: cliente.telefono,
-    fecha_nacimiento: cliente.fecha_nacimiento
+    fecha_nacimiento: formatearFecha(cliente.fecha_nacimiento)
     })
     setEditando(cliente._id)
 }
@@ -190,7 +204,7 @@ return (
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{cliente.ciudad}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{cliente.email}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{cliente.telefono}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{cliente.fecha_nacimiento}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{formatearFechaMostrar(cliente.fecha_nacimiento)}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
                     <button
                         onClick={() => editarCliente(cliente)}
