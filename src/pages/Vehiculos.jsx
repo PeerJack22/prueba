@@ -12,10 +12,10 @@ const [editando, setEditando] = useState(null)
 const [formularioVehiculo, setFormularioVehiculo] = useState({
     marca: '',
     modelo: '',
-    año: '',
+    anio_fabricacion: '',
     placa: '',
     color: '',
-    tipo: '',
+    tipo_vehiculo: '',
     kilometraje: '',
     descripcion: ''
 })
@@ -209,11 +209,11 @@ return (
                         </div>
                         
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Tipo</label>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Placa *</label>
                             <input 
                                 type="text" 
-                                name="tipo_vehiculo"
-                                value={formularioVehiculo.tipo_vehiculo}
+                                name="placa"
+                                value={formularioVehiculo.placa}
                                 onChange={manejarCambio}
                                 placeholder="Ej: ABC-123" 
                                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200"
@@ -234,7 +234,7 @@ return (
                         </div>
                         
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Tipo</label>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Tipo de Vehículo</label>
                             <select 
                                 name="tipo_vehiculo"
                                 value={formularioVehiculo.tipo_vehiculo}
@@ -314,7 +314,7 @@ return (
                             <h3 className="text-xl font-semibold text-gray-800">
                                 {vehiculo.marca} {vehiculo.modelo}
                             </h3>
-                            <p className="text-sm text-gray-500">{vehiculo.año}</p>
+                            <p className="text-sm text-gray-500">{vehiculo.anio_fabricacion}</p>
                         </div>
                         <div className="flex gap-2">
                             <button 
@@ -345,10 +345,10 @@ return (
                             </div>
                         )}
                         
-                        {vehiculo.tipo && (
+                        {vehiculo.tipo_vehiculo && (
                             <div className="flex justify-between">
                                 <span className="text-sm font-medium text-gray-600">Tipo:</span>
-                                <span className="text-sm text-gray-800">{vehiculo.tipo}</span>
+                                <span className="text-sm text-gray-800">{vehiculo.tipo_vehiculo}</span>
                             </div>
                         )}
                         
