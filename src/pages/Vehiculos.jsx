@@ -36,6 +36,7 @@ return (
     <div className="container mx-auto px-4 py-8">
         <div className="mb-8">
             <h2 className="text-3xl font-bold text-gray-800 mb-2">Gestión de Vehículos</h2>
+            <p className='text-2xl font-semibold text-gray-700'>Bienvenido, {localStorage.getItem('user')}</p>
             <p className="text-gray-600">Administra los vehículos del sistema</p>
         </div>
         
@@ -45,9 +46,16 @@ return (
                     type="text" 
                     value={nuevoVehiculo} 
                     onChange={(e) => setNuevoVehiculo(e.target.value)} 
-                    placeholder="Nombre del vehículo" 
+                    placeholder="Marca" 
                     className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200"
                 />
+                <input type="text" placeholder="Modelo" className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200" />
+                <input type="date" placeholder='Año de fabricación' className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200" />
+                <input type="text" placeholder="Placa" className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200" />
+                <input type="text" placeholder="Color" className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200" />
+                <input type="text" placeholder='Tipo de vehiculo' className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200" />
+                <input type="number" placeholder='Kilometraje' className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200" />
+                <input type="text" placeholder='Descripción' className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200" />
                 <button 
                     onClick={agregarVehiculo}
                     className="bg-blue-600 hover:bg-blue-700 text-white font-medium px-6 py-3 rounded-lg transition-colors duration-200 shadow-md hover:shadow-lg">
@@ -61,7 +69,9 @@ return (
             <div key={v._id} className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow duration-200">
                 <div className="flex items-center justify-between">
                     <div className="flex-1">
-                        <h3 className="text-lg font-semibold text-gray-800">{v.nombre}</h3>
+                        <h3 className="text-xl font-semibold text-gray-800">{v.modelo}</h3>
+                        
+
                     </div>
                     <button 
                         onClick={() => eliminarVehiculo(v._id)}

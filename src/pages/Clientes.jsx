@@ -77,6 +77,7 @@ return (
     <div className="container mx-auto px-4 py-8">
         <div className="mb-8">
         <h2 className="text-3xl font-bold text-gray-800 mb-2">Gestión de Clientes</h2>
+        <p className='text-2xl font-semibold text-gray-700'>Bienvenido, {localStorage.getItem('user')}</p>
         <p className="text-gray-600">Administra los clientes del sistema</p>
         </div>
 
@@ -177,7 +178,6 @@ return (
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Correo</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Teléfono</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha de Nacimiento</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
                 </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
