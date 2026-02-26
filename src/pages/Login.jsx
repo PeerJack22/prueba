@@ -17,7 +17,7 @@ function Login() {
             setLoading(true)
             setError('')
             
-            const response = await api.post('/auth/login', {
+            const response = await api.post('api/auth/login', {
             email,
             clave
             })
