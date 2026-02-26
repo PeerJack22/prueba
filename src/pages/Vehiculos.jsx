@@ -390,7 +390,6 @@ return (
         
         {vehiculos.length === 0 && !loading && (
             <div className="text-center py-12 bg-white rounded-lg shadow-md">
-                <div className="text-gray-400 text-6xl mb-4">🚗</div>
                 <p className="text-gray-500 text-lg">No hay vehículos registrados</p>
                 <p className="text-gray-400 text-sm mt-2">Agrega un vehículo para comenzar</p>
             </div>
