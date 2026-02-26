@@ -11,7 +11,7 @@ const [reservas, setReservas] = useState([])
 const [loading, setLoading] = useState(false)
 const [error, setError] = useState('')
 const [editando, setEditando] = useState(null)
-const [mostrandoFormulario, setMostrandoFormulario] = useState(false)
+const [mostrandoFormulario, setMostrandoFormulario] = useState(true)
 
 const [formularioReserva, setFormularioReserva] = useState({
     codigo: '',
@@ -53,7 +53,6 @@ const limpiarFormulario = () => {
         vehiculoId: ''
     })
     setEditando(null)
-    setMostrandoFormulario(false)
     setError('')
 }
 
@@ -118,7 +117,6 @@ const iniciarEdicion = (reserva) => {
         vehiculoId: reserva.vehiculoId || reserva.vehiculo?._id || ''
     })
     setEditando(reserva._id)
-    setMostrandoFormulario(true)
     setError('')
 }
 
@@ -171,22 +169,7 @@ return (
             </div>
         )}
 
-        <div className="mb-6">
-            <button
-                onClick={() => {
-                    setMostrandoFormulario(!mostrandoFormulario)
-                    if (!mostrandoFormulario) {
-                        limpiarFormulario()
-                    }
-                }}
-                className="bg-blue-600 hover:bg-blue-700 text-white font-medium px-6 py-3 rounded-lg transition-colors duration-200 shadow-md hover:shadow-lg"
-            >
-                {mostrandoFormulario ? 'Ocultar Formulario' : 'Nueva Reserva'}
-            </button>
-        </div>
-
-        {mostrandoFormulario && (
-            <div className="bg-white rounded-lg shadow-md p-6 mb-6">
+        <div className="bg-white rounded-lg shadow-md p-6 mb-6">
                 <h3 className="text-xl font-semibold text-gray-800 mb-4">
                     {editando ? 'Editar Reserva' : 'Nueva Reserva'}
                 </h3>
@@ -275,9 +258,8 @@ return (
                     </div>
                 </form>
             </div>
-        )}
 
-        {loading && !mostrandoFormulario && (
+        {loading && (
             <div className="text-center py-8">
                 <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
                 <p className="text-gray-600 mt-2">Cargando reservas...</p>
