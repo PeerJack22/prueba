@@ -41,24 +41,26 @@ return (
         </div>
         
         <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-            <div className="flex gap-3">
-                <input 
-                    type="text" 
-                    value={nuevoVehiculo} 
-                    onChange={(e) => setNuevoVehiculo(e.target.value)} 
-                    placeholder="Marca" 
-                    className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200"
-                />
-                <input type="text" placeholder="Modelo" className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200" />
-                <input type="date" placeholder='Año de fabricación' className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200" />
-                <input type="text" placeholder="Placa" className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200" />
-                <input type="text" placeholder="Color" className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200" />
-                <input type="text" placeholder='Tipo de vehiculo' className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200" />
-                <input type="number" placeholder='Kilometraje' className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200" />
-                <input type="text" placeholder='Descripción' className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200" />
+            <div className="flex flex-col gap-3">
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+                    <input 
+                        type="text" 
+                        value={nuevoVehiculo} 
+                        onChange={(e) => setNuevoVehiculo(e.target.value)} 
+                        placeholder="Marca" 
+                        className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200"
+                    />
+                    <input type="text" placeholder="Modelo" className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200" />
+                    <input type="date" placeholder='Año de fabricación' className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200" />
+                    <input type="text" placeholder="Placa" className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200" />
+                    <input type="text" placeholder="Color" className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200" />
+                    <input type="text" placeholder='Tipo de vehiculo' className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200" />
+                    <input type="number" placeholder='Kilometraje' className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200" />
+                    <input type="text" placeholder='Descripción' className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200" />
+                </div>
                 <button 
                     onClick={agregarVehiculo}
-                    className="bg-blue-600 hover:bg-blue-700 text-white font-medium px-6 py-3 rounded-lg transition-colors duration-200 shadow-md hover:shadow-lg">
+                    className="bg-blue-600 hover:bg-blue-700 text-white font-medium px-6 py-3 rounded-lg transition-colors duration-200 shadow-md hover:shadow-lg w-full md:w-auto">
                     Agregar
                 </button>
             </div>
@@ -70,8 +72,6 @@ return (
                 <div className="flex items-center justify-between">
                     <div className="flex-1">
                         <h3 className="text-xl font-semibold text-gray-800">{v.modelo}</h3>
-                        
-
                     </div>
                     <button 
                         onClick={() => eliminarVehiculo(v._id)}
