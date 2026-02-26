@@ -237,7 +237,7 @@ return (
                                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200"
                             >
                                 <option value="">Seleccione tipo</option>
-                                <option value="pequeno">Auto pequeños</option>
+                                <option value="pequeno">Auto pequeño</option>
                                 <option value="mediano">Auto mediano</option>
                                 <option value="grande">Auto grande</option>
                                 <option value="van">Van</option>
@@ -252,7 +252,6 @@ return (
                                 name="kilometraje"
                                 value={formularioVehiculo.kilometraje}
                                 onChange={manejarCambio}
-                                placeholder="Ej: 50000" 
                                 min="0"
                                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200"
                             />
@@ -264,7 +263,7 @@ return (
                                 name="descripcion"
                                 value={formularioVehiculo.descripcion}
                                 onChange={manejarCambio}
-                                placeholder="Descripción adicional del vehículo..." 
+                                placeholder="Descripción del vehículo" 
                                 rows="3"
                                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200 resize-none"
                             />
