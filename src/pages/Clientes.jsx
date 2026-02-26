@@ -121,8 +121,8 @@ return (
             <input
                 type="email"
                 placeholder="Correo electrónico"
-                value={formData.correo}
-                onChange={(e) => setFormData({ ...formData, correo: e.target.value })}
+                value={formData.email}
+                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 required
                 className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200"
             />
@@ -141,8 +141,8 @@ return (
                 className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200"
             />
             <input type="date"
-                value={formData.fechaNacimiento}
-                onChange={(e) => setFormData({ ...formData, fechaNacimiento: e.target.value })}
+                value={formData.fecha_nacimiento}
+                onChange={(e) => setFormData({ ...formData, fecha_nacimiento: e.target.value })}
                 required
                 className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200"
             />
@@ -178,6 +178,7 @@ return (
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Correo</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Teléfono</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha de Nacimiento</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
                 </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
@@ -187,17 +188,19 @@ return (
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{cliente.nombre}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{cliente.apellido}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{cliente.ciudad}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{cliente.correo}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{cliente.email}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{cliente.telefono}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{cliente.fechaNacimiento}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{cliente.fecha_nacimiento}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
                     <button
                         onClick={() => editarCliente(cliente)}
                         className="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded transition-colors duration-200">
+                        Editar
                     </button>
                     <button
                         onClick={() => eliminarCliente(cliente._id)}
                         className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded transition-colors duration-200">
+                        Eliminar
                     </button>
                     </td>
                 </tr>
