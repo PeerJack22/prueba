@@ -17,13 +17,15 @@ function Login() {
             setLoading(true)
             setError('')
             
-            const response = await api.post('/login', {
-                email,
-                clave
+            const response = await api.post('/auth/login', {
+            email,
+            clave
             })
 
             if (response.data.token) {
-                localStorage.setItem('token', response.data.token)
+            localStorage.setItem('token', response.data.token)
+            // Configurar el token en los headers por defecto
+            api.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`
             }
             
             localStorage.setItem('user', response.data.user?.email || email)
