@@ -175,7 +175,6 @@ return (
                                 name="marca"
                                 value={formularioVehiculo.marca} 
                                 onChange={manejarCambio}
-                                placeholder="Ej: Toyota" 
                                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200"
                                 required
                             />
@@ -188,7 +187,6 @@ return (
                                 name="modelo"
                                 value={formularioVehiculo.modelo}
                                 onChange={manejarCambio}
-                                placeholder="Ej: Corolla" 
                                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200"
                                 required
                             />
@@ -201,7 +199,6 @@ return (
                                 name="anio_fabricacion"
                                 value={formularioVehiculo.anio_fabricacion}
                                 onChange={manejarCambio}
-                                placeholder="Ej: 2023" 
                                 min="1900"
                                 max="2030"
                                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200"
@@ -215,7 +212,6 @@ return (
                                 name="placa"
                                 value={formularioVehiculo.placa}
                                 onChange={manejarCambio}
-                                placeholder="Ej: ABC-123" 
                                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200"
                                 required
                             />
@@ -228,7 +224,6 @@ return (
                                 name="color"
                                 value={formularioVehiculo.color}
                                 onChange={manejarCambio}
-                                placeholder="Ej: Azul" 
                                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200"
                             />
                         </div>
@@ -242,13 +237,10 @@ return (
                                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200"
                             >
                                 <option value="">Seleccione tipo</option>
-                                <option value="Sedan">Sedán</option>
-                                <option value="SUV">SUV</option>
-                                <option value="Hatchback">Hatchback</option>
-                                <option value="Pickup">Pickup</option>
-                                <option value="Coupe">Coupé</option>
-                                <option value="Convertible">Convertible</option>
-                                <option value="Van">Van</option>
+                                <option value="pequeno">Auto pequeños</option>
+                                <option value="mediano">Auto mediano</option>
+                                <option value="grande">Auto grande</option>
+                                <option value="van">Van</option>
                                 <option value="Camion">Camión</option>
                             </select>
                         </div>
