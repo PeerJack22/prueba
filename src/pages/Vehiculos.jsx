@@ -4,30 +4,148 @@ import api from '../services/api'
 
 function Vehiculos() {
 const [vehiculos, setVehiculos] = useState([])
-const [nuevoVehiculo, setNuevoVehiculo] = useState('')
+const [loading, setLoading] = useState(false)
+const [error, setError] = useState('')
+const [editando, setEditando] = useState(null)
+const [mostrandoFormulario, setMostrandoFormulario] = useState(false)
 
-  // Cargar vehículos desde el backend
+// Para el formulario
+const [formularioVehiculo, setFormularioVehiculo] = useState({
+    marca: '',
+    modelo: '',
+    año: '',
+    placa: '',
+    color: '',
+    tipo: '',
+    kilometraje: '',
+    descripcion: ''
+})
+
+// Obtener los vehiculos
 useEffect(() => {
-    api.get('/vehiculos')
-    .then(res => setVehiculos(res.data))
-    .catch(err => console.error(err))
+    cargarVehiculos()
 }, [])
 
-  // Crear vehículo en el backend
-const agregarVehiculo = () => {
-    if (nuevoVehiculo.trim() !== '') {
-    api.post('/vehiculos', { nombre: nuevoVehiculo })
-        .then(res => setVehiculos([...vehiculos, res.data]))
-        .catch(err => console.error(err))
-    setNuevoVehiculo('')
+const cargarVehiculos = async () => {
+    try {
+        setLoading(true)
+        const response = await api.get('/vehiculos')
+        setVehiculos(response.data)
+        setError('')
+    } catch (err) {
+        setError('Error al cargar los vehículos')
+        console.error(err)
+    } finally {
+        setLoading(false)
     }
 }
 
-  // Eliminar vehículo en el backend
-const eliminarVehiculo = (id) => {
-    api.delete(`/vehiculos/${id}`)
-    .then(() => setVehiculos(vehiculos.filter(v => v._id !== id)))
-    .catch(err => console.error(err))
+
+const limpiarFormulario = () => {
+    setFormularioVehiculo({
+        marca: '',
+        modelo: '',
+        año: '',
+        placa: '',
+        color: '',
+        tipo: '',
+        kilometraje: '',
+        descripcion: ''
+    })
+    setEditando(null)
+    setMostrandoFormulario(false)
+    setError('')
+}
+
+
+const manejarCambio = (e) => {
+    const { name, value } = e.target
+    setFormularioVehiculo(prev => ({
+        ...prev,
+        [name]: value
+    }))
+}
+
+
+const validarFormulario = () => {
+    const { marca, modelo, placa } = formularioVehiculo
+    if (!marca.trim() || !modelo.trim() || !placa.trim()) {
+        setError('Marca, modelo y placa son campos obligatorios')
+        return false
+    }
+    return true
+}
+
+// Crear vehículo 
+const agregarVehiculo = async (e) => {
+    e.preventDefault()
+    if (!validarFormulario()) return
+
+    try {
+        setLoading(true)
+        const response = await api.post('/vehiculos', formularioVehiculo)
+        setVehiculos([...vehiculos, response.data])
+        limpiarFormulario()
+        setError('')
+    } catch (err) {
+        setError('Error al crear el vehículo')
+        console.error(err)
+    } finally {
+        setLoading(false)
+    }
+}
+
+// Actualizar vehículo
+const actualizarVehiculo = async (e) => {
+    e.preventDefault()
+    if (!validarFormulario()) return
+
+    try {
+        setLoading(true)
+        const response = await api.put(`/vehiculos/${editando}`, formularioVehiculo)
+        setVehiculos(vehiculos.map(v => v._id === editando ? response.data : v))
+        limpiarFormulario()
+        setError('')
+    } catch (err) {
+        setError('Error al actualizar el vehículo')
+        console.error(err)
+    } finally {
+        setLoading(false)
+    }
+}
+
+
+const iniciarEdicion = (vehiculo) => {
+    setFormularioVehiculo({
+        marca: vehiculo.marca || '',
+        modelo: vehiculo.modelo || '',
+        año: vehiculo.año || '',
+        placa: vehiculo.placa || '',
+        color: vehiculo.color || '',
+        tipo: vehiculo.tipo || '',
+        kilometraje: vehiculo.kilometraje || '',
+        descripcion: vehiculo.descripcion || ''
+    })
+    setEditando(vehiculo._id)
+    setMostrandoFormulario(true)
+    setError('')
+}
+
+// Eliminar vehículo 
+const eliminarVehiculo = async (id) => {
+    if (window.confirm('¿Estás seguro de que quieres eliminar este vehículo?')) {
+        try {
+            setLoading(true)
+            await api.delete(`/vehiculos/${id}`)
+            setVehiculos(vehiculos.filter(v => v._id !== id))
+            setError('')
+        } catch (err) {
+            setError('Error al eliminar el vehículo')
+            console.error(err)
+        } finally {
+            setLoading(false)
+        }
+    }
 }
 
 return (
@@ -39,52 +157,240 @@ return (
             <p className='text-2xl font-semibold text-gray-700'>Bienvenido, {localStorage.getItem('user')}</p>
             <p className="text-gray-600">Administra los vehículos del sistema</p>
         </div>
-        
-        <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-            <div className="flex flex-col gap-3">
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-                    <input 
-                        type="text" 
-                        value={nuevoVehiculo} 
-                        onChange={(e) => setNuevoVehiculo(e.target.value)} 
-                        placeholder="Marca" 
-                        className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200"
-                    />
-                    <input type="text" placeholder="Modelo" className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200" />
-                    <input type="date" placeholder='Año de fabricación' className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200" />
-                    <input type="text" placeholder="Placa" className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200" />
-                    <input type="text" placeholder="Color" className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200" />
-                    <input type="text" placeholder='Tipo de vehiculo' className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200" />
-                    <input type="number" placeholder='Kilometraje' className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200" />
-                    <input type="text" placeholder='Descripción' className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200" />
-                </div>
-                <button 
-                    onClick={agregarVehiculo}
-                    className="bg-blue-600 hover:bg-blue-700 text-white font-medium px-6 py-3 rounded-lg transition-colors duration-200 shadow-md hover:shadow-lg w-full md:w-auto">
-                    Agregar
-                </button>
+
+        {error && (
+            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+                {error}
             </div>
+        )}
+
+        <div className="mb-6">
+            <button
+                onClick={() => {
+                    setMostrandoFormulario(!mostrandoFormulario)
+                    if (!mostrandoFormulario) {
+                        limpiarFormulario()
+                    }
+                }}
+                className="bg-blue-600 hover:bg-blue-700 text-white font-medium px-6 py-3 rounded-lg transition-colors duration-200 shadow-md hover:shadow-lg"
+            >
+                {mostrandoFormulario ? 'Ocultar Formulario' : 'Agregar Vehículo'}
+            </button>
         </div>
 
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {vehiculos.map(v => (
-            <div key={v._id} className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow duration-200">
-                <div className="flex items-center justify-between">
-                    <div className="flex-1">
-                        <h3 className="text-xl font-semibold text-gray-800">{v.modelo}</h3>
+        {mostrandoFormulario && (
+            <div className="bg-white rounded-lg shadow-md p-6 mb-6">
+                <h3 className="text-xl font-semibold text-gray-800 mb-4">
+                    {editando ? 'Editar Vehículo' : 'Agregar Nuevo Vehículo'}
+                </h3>
+                
+                <form onSubmit={editando ? actualizarVehiculo : agregarVehiculo}>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Marca *</label>
+                            <input 
+                                type="text" 
+                                name="marca"
+                                value={formularioVehiculo.marca} 
+                                onChange={manejarCambio}
+                                placeholder="Ej: Toyota" 
+                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200"
+                                required
+                            />
+                        </div>
+                        
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Modelo *</label>
+                            <input 
+                                type="text" 
+                                name="modelo"
+                                value={formularioVehiculo.modelo}
+                                onChange={manejarCambio}
+                                placeholder="Ej: Corolla" 
+                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200"
+                                required
+                            />
+                        </div>
+                        
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Año</label>
+                            <input 
+                                type="number" 
+                                name="año"
+                                value={formularioVehiculo.año}
+                                onChange={manejarCambio}
+                                placeholder="Ej: 2023" 
+                                min="1900"
+                                max="2030"
+                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200"
+                            />
+                        </div>
+                        
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Placa *</label>
+                            <input 
+                                type="text" 
+                                name="placa"
+                                value={formularioVehiculo.placa}
+                                onChange={manejarCambio}
+                                placeholder="Ej: ABC-123" 
+                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200"
+                                required
+                            />
+                        </div>
+                        
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Color</label>
+                            <input 
+                                type="text" 
+                                name="color"
+                                value={formularioVehiculo.color}
+                                onChange={manejarCambio}
+                                placeholder="Ej: Azul" 
+                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200"
+                            />
+                        </div>
+                        
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Tipo</label>
+                            <select 
+                                name="tipo"
+                                value={formularioVehiculo.tipo}
+                                onChange={manejarCambio}
+                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200"
+                            >
+                                <option value="">Seleccione tipo</option>
+                                <option value="Sedan">Sedán</option>
+                                <option value="SUV">SUV</option>
+                                <option value="Hatchback">Hatchback</option>
+                                <option value="Pickup">Pickup</option>
+                                <option value="Coupe">Coupé</option>
+                                <option value="Convertible">Convertible</option>
+                                <option value="Van">Van</option>
+                                <option value="Camion">Camión</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Kilometraje</label>
+                            <input 
+                                type="number" 
+                                name="kilometraje"
+                                value={formularioVehiculo.kilometraje}
+                                onChange={manejarCambio}
+                                placeholder="Ej: 50000" 
+                                min="0"
+                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200"
+                            />
+                        </div>
+                        
+                        <div className="md:col-span-2">
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Descripción</label>
+                            <textarea 
+                                name="descripcion"
+                                value={formularioVehiculo.descripcion}
+                                onChange={manejarCambio}
+                                placeholder="Descripción adicional del vehículo..." 
+                                rows="3"
+                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200 resize-none"
+                            />
+                        </div>
                     </div>
-                    <button 
-                        onClick={() => eliminarVehiculo(v._id)}
-                        className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-colors duration-200 text-sm font-medium">
-                        Eliminar
-                    </button>
-                </div>
+                    
+                    <div className="flex gap-3 mt-6">
+                        <button 
+                            type="submit"
+                            disabled={loading}
+                            className="bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-medium px-6 py-3 rounded-lg transition-colors duration-200 shadow-md hover:shadow-lg"
+                        >
+                            {loading ? 'Guardando...' : (editando ? 'Actualizar' : 'Agregar')}
+                        </button>
+                        
+                        <button 
+                            type="button"
+                            onClick={limpiarFormulario}
+                            className="bg-gray-500 hover:bg-gray-600 text-white font-medium px-6 py-3 rounded-lg transition-colors duration-200"
+                        >
+                            Cancelar
+                        </button>
+                    </div>
+                </form>
             </div>
+        )}
+
+        {loading && !mostrandoFormulario && (
+            <div className="text-center py-8">
+                <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+                <p className="text-gray-600 mt-2">Cargando vehículos...</p>
+            </div>
+        )}
+
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {vehiculos.map(vehiculo => (
+                <div key={vehiculo._id} className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow duration-200">
+                    <div className="flex items-start justify-between mb-4">
+                        <div className="flex-1">
+                            <h3 className="text-xl font-semibold text-gray-800">
+                                {vehiculo.marca} {vehiculo.modelo}
+                            </h3>
+                            <p className="text-sm text-gray-500">{vehiculo.año}</p>
+                        </div>
+                        <div className="flex gap-2">
+                            <button 
+                                onClick={() => iniciarEdicion(vehiculo)}
+                                className="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded text-sm font-medium transition-colors duration-200"
+                            >
+                                Editar
+                            </button>
+                            <button 
+                                onClick={() => eliminarVehiculo(vehiculo._id)}
+                                className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm font-medium transition-colors duration-200"
+                            >
+                                Eliminar
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div className="space-y-2">
+                        <div className="flex justify-between">
+                            <span className="text-sm font-medium text-gray-600">Placa:</span>
+                            <span className="text-sm text-gray-800">{vehiculo.placa || 'N/A'}</span>
+                        </div>
+                        
+                        {vehiculo.color && (
+                            <div className="flex justify-between">
+                                <span className="text-sm font-medium text-gray-600">Color:</span>
+                                <span className="text-sm text-gray-800">{vehiculo.color}</span>
+                            </div>
+                        )}
+                        
+                        {vehiculo.tipo && (
+                            <div className="flex justify-between">
+                                <span className="text-sm font-medium text-gray-600">Tipo:</span>
+                                <span className="text-sm text-gray-800">{vehiculo.tipo}</span>
+                            </div>
+                        )}
+                        
+                        {vehiculo.kilometraje && (
+                            <div className="flex justify-between">
+                                <span className="text-sm font-medium text-gray-600">Kilometraje:</span>
+                                <span className="text-sm text-gray-800">{Number(vehiculo.kilometraje).toLocaleString()} km</span>
+                            </div>
+                        )}
+                        
+                        {vehiculo.descripcion && (
+                            <div className="mt-3 pt-3 border-t border-gray-200">
+                                <p className="text-sm text-gray-600">{vehiculo.descripcion}</p>
+                            </div>
+                        )}
+                    </div>
+                </div>
             ))}
         </div>
         
-        {vehiculos.length === 0 && (
+        {vehiculos.length === 0 && !loading && (
             <div className="text-center py-12 bg-white rounded-lg shadow-md">
+                <div className="text-gray-400 text-6xl mb-4">🚗</div>
                 <p className="text-gray-500 text-lg">No hay vehículos registrados</p>
                 <p className="text-gray-400 text-sm mt-2">Agrega un vehículo para comenzar</p>
             </div>
