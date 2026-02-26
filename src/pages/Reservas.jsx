@@ -332,7 +332,6 @@ return (
             </div>
             {reservas.length === 0 && !loading && (
                 <div className="text-center py-12">
-                    <div className="text-gray-400 text-6xl mb-4">📅</div>
                     <p className="text-gray-500 text-lg">No hay reservas registradas</p>
                     <p className="text-gray-400 text-sm mt-2">Crea una nueva reserva para comenzar</p>
                 </div>

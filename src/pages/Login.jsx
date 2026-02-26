@@ -1,23 +1,45 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
-
+import api from '../services/api'
 
 function Login() {
     
     const [email, setEmail] = useState("")
     const [clave, setClave] = useState("")
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState("")
     const navigate = useNavigate()
 
-
-    const handleLogin = (e) => {
+    const handleLogin = async (e) => {
         e.preventDefault() 
 
-        if (email === 'admin@gmail.com' && clave === '123') {
-            alert('Inicio de sesión exitoso')
-            localStorage.setItem('user', email) 
+        try {
+            setLoading(true)
+            setError('')
+            
+            const response = await api.post('/login', {
+                email,
+                clave
+            })
+
+            if (response.data.token) {
+                localStorage.setItem('token', response.data.token)
+            }
+            
+            localStorage.setItem('user', response.data.user?.email || email)
             navigate('/clientes')
-        } else {
-            alert('Credenciales incorrectas')
+            
+        } catch (err) {
+            if (err.response?.status === 401) {
+                setError('Credenciales incorrectas')
+            } else if (err.response?.data?.message) {
+                setError(err.response.data.message)
+            } else {
+                setError('Error al conectar con el servidor')
+            }
+            console.error('Error de login:', err)
+        } finally {
+            setLoading(false)
         }
     }
 
@@ -28,6 +50,13 @@ return (
                 <h2 className="text-3xl font-bold text-gray-800 mb-2">Sistema de gestión de renta de carros</h2>
                 <p className="text-gray-600">Iniciar sesión</p>
             </div>
+
+            {error && (
+                <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4 text-center">
+                    {error}
+                </div>
+            )}
+
             <form onSubmit={handleLogin} className="space-y-6">
                 <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -38,8 +67,9 @@ return (
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         required
+                        disabled={loading}
                         placeholder="ejemplo@gmail.com"
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 outline-none"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 outline-none disabled:bg-gray-100"
                     />
                 </div>
                 <div>
@@ -51,20 +81,25 @@ return (
                         value={clave}
                         onChange={(e) => setClave(e.target.value)}
                         required
+                        disabled={loading}
                         placeholder="••••••"
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 outline-none"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 outline-none disabled:bg-gray-100"
                     />
                 </div>
                 <button 
                     type="submit" 
-                    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-[1.02]">
-                    Ingresar
+                    disabled={loading}
+                    className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-semibold py-3 rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-[1.02] disabled:transform-none disabled:cursor-not-allowed">
+                    {loading ? (
+                        <div className="flex items-center justify-center">
+                            <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                            Ingresando...
+                        </div>
+                    ) : (
+                        'Ingresar'
+                    )}
                 </button>
             </form>
-            <div className="mt-6 text-center text-sm text-gray-600">
-                <p>Credenciales de prueba:</p>
-                <p className="font-mono text-xs mt-1">admin@gmail.com / 123</p>
-            </div>
         </div>
     </div>
 )
