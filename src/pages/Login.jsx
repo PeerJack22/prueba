@@ -29,7 +29,7 @@ function Login() {
             }
             
             localStorage.setItem('user', response.data.user?.email || email)
-            navigate('/usarios')
+            navigate('/clientes')
             
         } catch (err) {
             if (err.response?.status === 401) {
