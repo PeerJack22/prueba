@@ -5,7 +5,7 @@ import api from '../services/api'
 function Login() {
     
     const [email, setEmail] = useState("")
-    const [clave, setClave] = useState("")
+    const [password, setPassword] = useState("")
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState("")
     const navigate = useNavigate()
@@ -19,7 +19,7 @@ function Login() {
             
             const response = await api.post('/auth/login', {
             email,
-            clave
+            password
             })
 
             if (response.data.token) {
@@ -80,8 +80,8 @@ return (
                     </label>
                     <input 
                         type="password" 
-                        value={clave}
-                        onChange={(e) => setClave(e.target.value)}
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
                         required
                         disabled={loading}
                         placeholder="••••••"
