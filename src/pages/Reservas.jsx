@@ -16,8 +16,8 @@ const [mostrandoFormulario, setMostrandoFormulario] = useState(true)
 const [formularioReserva, setFormularioReserva] = useState({
     codigo: '',
     descripcion: '',
-    clienteId: '',
-    vehiculoId: ''
+    cliente: '',
+    vehiculo: ''
 })
 
 useEffect(() => {
@@ -49,8 +49,8 @@ const limpiarFormulario = () => {
     setFormularioReserva({
         codigo: '',
         descripcion: '',
-        clienteId: '',
-        vehiculoId: ''
+        cliente: '',
+        vehiculo: ''
     })
     setEditando(null)
     setError('')
@@ -65,8 +65,8 @@ const manejarCambio = (e) => {
 }
 
 const validarFormulario = () => {
-    const { codigo, descripcion, clienteId, vehiculoId } = formularioReserva
-    if (!codigo.trim() || !descripcion.trim() || !clienteId || !vehiculoId) {
+    const { codigo, descripcion, cliente, vehiculo } = formularioReserva
+    if (!codigo.trim() || !descripcion.trim() || !cliente || !vehiculo) {
         setError('Todos los campos son obligatorios')
         return false
     }
@@ -113,8 +113,8 @@ const iniciarEdicion = (reserva) => {
     setFormularioReserva({
         codigo: reserva.codigo || '',
         descripcion: reserva.descripcion || '',
-        clienteId: reserva.clienteId || reserva.cliente?._id || '',
-        vehiculoId: reserva.vehiculoId || reserva.vehiculo?._id || ''
+        cliente: reserva.cliente?._id || reserva.cliente || '',
+        vehiculo: reserva.vehiculo?._id || reserva.vehiculo || ''
     })
     setEditando(reserva._id)
     setError('')
@@ -138,18 +138,18 @@ const eliminarReserva = async (id) => {
 }
 
 const obtenerNombreCliente = (reserva) => {
-    if (reserva.cliente) {
+    if (reserva.cliente && typeof reserva.cliente === 'object') {
         return `${reserva.cliente.nombre} ${reserva.cliente.apellido}`
     }
-    const cliente = clientes.find(c => c._id === reserva.clienteId)
+    const cliente = clientes.find(c => c._id === reserva.cliente)
     return cliente ? `${cliente.nombre} ${cliente.apellido}` : 'Cliente no encontrado'
 }
 
 const obtenerNombreVehiculo = (reserva) => {
-    if (reserva.vehiculo) {
+    if (reserva.vehiculo && typeof reserva.vehiculo === 'object') {
         return `${reserva.vehiculo.marca} ${reserva.vehiculo.modelo}`
     }
-    const vehiculo = vehiculos.find(v => v._id === reserva.vehiculoId)
+    const vehiculo = vehiculos.find(v => v._id === reserva.vehiculo)
     return vehiculo ? `${vehiculo.marca} ${vehiculo.modelo}` : 'Vehículo no encontrado'
 }
 
@@ -192,8 +192,8 @@ return (
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">Cliente *</label>
                             <select 
-                                name="clienteId"
-                                value={formularioReserva.clienteId} 
+                                name="cliente"
+                                value={formularioReserva.cliente} 
                                 onChange={manejarCambio}
                                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200"
                                 required
@@ -210,8 +210,8 @@ return (
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">Vehículo *</label>
                             <select 
-                                name="vehiculoId"
-                                value={formularioReserva.vehiculoId} 
+                                name="vehiculo"
+                                value={formularioReserva.vehiculo} 
                                 onChange={manejarCambio}
                                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200"
                                 required
