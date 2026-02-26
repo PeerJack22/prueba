@@ -1,1 +1,1 @@
-# Sistema de gestiòn de venta de carros
+# Sistema de gestión de venta de carros
