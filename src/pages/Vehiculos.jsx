@@ -44,10 +44,10 @@ const limpiarFormulario = () => {
     setFormularioVehiculo({
         marca: '',
         modelo: '',
-        año: '',
+        anio_fabricacion: '',
         placa: '',
         color: '',
-        tipo: '',
+        tipo_vehiculo: '',
         kilometraje: '',
         descripcion: ''
     })
@@ -117,10 +117,10 @@ const iniciarEdicion = (vehiculo) => {
     setFormularioVehiculo({
         marca: vehiculo.marca || '',
         modelo: vehiculo.modelo || '',
-        año: vehiculo.año || '',
+        anio_fabricacion: vehiculo.anio_fabricacion || '',
         placa: vehiculo.placa || '',
         color: vehiculo.color || '',
-        tipo: vehiculo.tipo || '',
+        tipo_vehiculo: vehiculo.tipo_vehiculo || '',
         kilometraje: vehiculo.kilometraje || '',
         descripcion: vehiculo.descripcion || ''
     })
@@ -198,8 +198,8 @@ return (
                             <label className="block text-sm font-medium text-gray-700 mb-1">Año</label>
                             <input 
                                 type="number" 
-                                name="año"
-                                value={formularioVehiculo.año}
+                                name="anio_fabricacion"
+                                value={formularioVehiculo.anio_fabricacion}
                                 onChange={manejarCambio}
                                 placeholder="Ej: 2023" 
                                 min="1900"
@@ -209,11 +209,11 @@ return (
                         </div>
                         
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Placa *</label>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Tipo</label>
                             <input 
                                 type="text" 
-                                name="placa"
-                                value={formularioVehiculo.placa}
+                                name="tipo_vehiculo"
+                                value={formularioVehiculo.tipo_vehiculo}
                                 onChange={manejarCambio}
                                 placeholder="Ej: ABC-123" 
                                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200"
@@ -236,8 +236,8 @@ return (
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">Tipo</label>
                             <select 
-                                name="tipo"
-                                value={formularioVehiculo.tipo}
+                                name="tipo_vehiculo"
+                                value={formularioVehiculo.tipo_vehiculo}
                                 onChange={manejarCambio}
                                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200"
                             >
