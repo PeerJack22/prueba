@@ -122,6 +122,7 @@ const iniciarEdicion = (reserva) => {
     setError('')
 }
 
+// Para eliminar la reserva
 const eliminarReserva = async (id) => {
     if (window.confirm('¿Estás seguro de que quieres eliminar esta reserva?')) {
         try {
