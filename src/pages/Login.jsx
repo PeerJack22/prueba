@@ -27,7 +27,7 @@ function Login() {
             }
             
             localStorage.setItem('user', response.data.user?.email || email)
-            navigate('/clientes')
+            navigate('/usarios')
             
         } catch (err) {
             if (err.response?.status === 401) {
